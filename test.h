@@ -6,9 +6,7 @@
 
 // юнит-тесты  
 
-
 void Test() {
-
 	{
 		Vector3D start_V(5, 5, 5);
 		Vector3D end_V(10, 5, 5);

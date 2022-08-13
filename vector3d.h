@@ -6,7 +6,6 @@
 
 constexpr double EPSILON = std::numeric_limits<double>::epsilon(); // машинный ноль
 
-
 class Vector3D
 {
 public:
