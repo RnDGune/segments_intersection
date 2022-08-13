@@ -3,6 +3,9 @@
 #include<cmath>
 #include<limits>
 #include<stdexcept>
+#include <array>
+#include <algorithm>
+#include <iterator>
 
 constexpr double EPSILON = std::numeric_limits<double>::epsilon(); // машинный ноль
 
@@ -13,8 +16,8 @@ public:
 	Vector3D() = default;
 	Vector3D(double x, double y, double z);
 
-	bool operator == (const Vector3D& v); 
-	bool operator != (const Vector3D& v);
+	bool operator == (const Vector3D& v) const; 
+	bool operator != (const Vector3D& v) const;
 
 	const Vector3D operator - (const Vector3D& v) const;
 	const Vector3D operator + (const Vector3D& v) const;
@@ -50,6 +53,8 @@ private:
 	Vector3D end;
 
 };
+
+std::pair <Vector3D, Vector3D>  CalculateLinkVector(const Segment3D& segment_u, const Segment3D& segment_v);
 
 /*
 * Функция поиска точки пересечения двух сегментов
