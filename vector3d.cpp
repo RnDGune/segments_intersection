@@ -43,16 +43,16 @@ const Vector3D Vector3D::operator* (double number) const {
 	return result;
 };
 
-double Vector3D::CalculateScalarProd(const Vector3D& v) { //скалярное произведение
+double Vector3D::CalculateScalarProd(const Vector3D& v) { //СЃРєР°Р»СЏСЂРЅРѕРµ РїСЂРѕРёР·РІРµРґРµРЅРёРµ
 	return v.X * X + v.Y * Y + v.Z * Z;
 };
 
-double Vector3D::CalculateLength() { // норма вектора
+double Vector3D::CalculateLength() { // РЅРѕСЂРјР° РІРµРєС‚РѕСЂР°
 	double norm = X * X + Y * Y + Z * Z;
 	return std::sqrt(norm);
 };
 
-Vector3D Vector3D::CalculateCrossProd(const Vector3D& v) { //векторное произведение
+Vector3D Vector3D::CalculateCrossProd(const Vector3D& v) { //РІРµРєС‚РѕСЂРЅРѕРµ РїСЂРѕРёР·РІРµРґРµРЅРёРµ
 	double cross_x = Y * v.Z - Z * v.Y;
 	double cross_y = Z * v.X - X * v.Z;
 	double cross_z = X * v.Y - Y * v.X;
@@ -72,11 +72,11 @@ Segment3D::Segment3D(const Vector3D& v, const Vector3D& u) {
 	end = u;
 };
 
-Vector3D Segment3D::Directional_Vector() const { // направляющий вектор отрезка
+Vector3D Segment3D::Directional_Vector() const { // РЅР°РїСЂР°РІР»СЏСЋС‰РёР№ РІРµРєС‚РѕСЂ РѕС‚СЂРµР·РєР°
 	return end - start;
 }
 
-bool Segment3D::IsPointOn(const Vector3D& v) const { // ф-ция проверки что точка лежит на отрезке
+bool Segment3D::IsPointOn(const Vector3D& v) const { // С„-С†РёСЏ РїСЂРѕРІРµСЂРєРё С‡С‚Рѕ С‚РѕС‡РєР° Р»РµР¶РёС‚ РЅР° РѕС‚СЂРµР·РєРµ
 	if (v == start || v == end) {
 		return true;
 	}
@@ -113,11 +113,11 @@ std::pair <Vector3D, Vector3D> CalculateLinkVector(const Segment3D& segment_v, c
 
 
 /*
-*Функция поиска точки пересечения двух сегментов
-* @param segment_v первый сегмент для которго мы ищем точку пересечения
-* @param segment_u первый сегмент для которго мы ищем точку пересечения
-* @return Vector3D точку пересечения, или бросает исключение std::logic_error если если её нет или это множество точек
-* можно было сделать  через возврат std::optional<Vector3D> и возвращать std::nullopt если пересечения нет
+*Р¤СѓРЅРєС†РёСЏ РїРѕРёСЃРєР° С‚РѕС‡РєРё РїРµСЂРµСЃРµС‡РµРЅРёСЏ РґРІСѓС… СЃРµРіРјРµРЅС‚РѕРІ
+* @param segment_v РїРµСЂРІС‹Р№ СЃРµРіРјРµРЅС‚ РґР»СЏ РєРѕС‚РѕСЂРіРѕ РјС‹ РёС‰РµРј С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёСЏ
+* @param segment_u РїРµСЂРІС‹Р№ СЃРµРіРјРµРЅС‚ РґР»СЏ РєРѕС‚РѕСЂРіРѕ РјС‹ РёС‰РµРј С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёСЏ
+* @return Vector3D С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёСЏ, РёР»Рё Р±СЂРѕСЃР°РµС‚ РёСЃРєР»СЋС‡РµРЅРёРµ std::logic_error РµСЃР»Рё РµСЃР»Рё РµС‘ РЅРµС‚ РёР»Рё СЌС‚Рѕ РјРЅРѕР¶РµСЃС‚РІРѕ С‚РѕС‡РµРє
+* РјРѕР¶РЅРѕ Р±С‹Р»Рѕ СЃРґРµР»Р°С‚СЊ  С‡РµСЂРµР· РІРѕР·РІСЂР°С‚ std::optional<Vector3D> Рё РІРѕР·РІСЂР°С‰Р°С‚СЊ std::nullopt РµСЃР»Рё РїРµСЂРµСЃРµС‡РµРЅРёСЏ РЅРµС‚
 */
 Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u) {
 
@@ -175,11 +175,11 @@ Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u) {
 	if (fe.CalculateScalarProd(link_vec.first) > EPSILON) {
 		throw std::logic_error("Disjoint segment");
 	}
-	Vector3D intersec_point = link_vec.second + v_direct_vec * ((fg.CalculateScalarProd(fe) / fe.CalculateLength()) / fe.CalculateLength()); // порядок умножения скаляра на вектор важен, определил только оператор вектор*скаляр
+	Vector3D intersec_point = link_vec.second + v_direct_vec * ((fg.CalculateScalarProd(fe) / fe.CalculateLength()) / fe.CalculateLength()); // РїРѕСЂСЏРґРѕРє СѓРјРЅРѕР¶РµРЅРёСЏ СЃРєР°Р»СЏСЂР° РЅР° РІРµРєС‚РѕСЂ РІР°Р¶РµРЅ, РѕРїСЂРµРґРµР»РёР» С‚РѕР»СЊРєРѕ РѕРїРµСЂР°С‚РѕСЂ РІРµРєС‚РѕСЂ*СЃРєР°Р»СЏСЂ
 	double d = fg.CalculateScalarProd(fe);
 	double a = fe.CalculateLength();
 
-	if (!segment_v.IsPointOn(intersec_point) || !segment_u.IsPointOn(intersec_point)) { // проверка что точка лежит на обоих отрезках
+	if (!segment_v.IsPointOn(intersec_point) || !segment_u.IsPointOn(intersec_point)) { // РїСЂРѕРІРµСЂРєР° С‡С‚Рѕ С‚РѕС‡РєР° Р»РµР¶РёС‚ РЅР° РѕР±РѕРёС… РѕС‚СЂРµР·РєР°С…
 		throw std::logic_error("Intersecting on continuation lines");
 	}
 	return intersec_point;

@@ -9,11 +9,11 @@
 #include <utility>
 #include <tuple>
 
-constexpr double EPSILON = std::numeric_limits<double>::epsilon(); // машинный ноль
+constexpr double EPSILON = std::numeric_limits<double>::epsilon(); // РјР°С€РёРЅРЅС‹Р№ РЅРѕР»СЊ
 
-/*ограничение от переполнения дабла
-* маск степент дабла 308, у нас берется скалярное произовденеи от векторного,
-* (е70 * e70 * e70 * e70)<308
+/*РѕРіСЂР°РЅРёС‡РµРЅРёРµ РѕС‚ РїРµСЂРµРїРѕР»РЅРµРЅРёВ¤ РґР°Р±Р»Р°
+* РјР°СЃРє СЃС‚РµРїРµРЅС‚ РґР°Р±Р»Р° 308, Сѓ РЅР°СЃ Р±РµСЂРµС‚СЃВ¤ СЃРєР°Р»В¤СЂРЅРѕРµ РїСЂРѕРёР·РѕРІРґРµРЅРµРё РѕС‚ РІРµРєС‚РѕСЂРЅРѕРіРѕ,
+* (Рµ70 * e70 * e70 * e70)<308
 */
 const double COORD_LIMIT = 1e70; 
 
@@ -28,9 +28,9 @@ public:
 	const Vector3D operator - (const Vector3D& v) const;
 	const Vector3D operator + (const Vector3D& v) const;
 	const Vector3D operator * (double number) const;
-	double CalculateScalarProd(const Vector3D& v);// Скалярное произведенеи
-	double CalculateLength();  // норма вектора
-	Vector3D CalculateCrossProd(const Vector3D& v); //векторное произведение
+	double CalculateScalarProd(const Vector3D& v);// вЂ”РєР°Р»В¤СЂРЅРѕРµ РїСЂРѕРёР·РІРµРґРµРЅРµРё
+	double CalculateLength();  // РЅРѕСЂРјР° РІРµРєС‚РѕСЂР°
+	Vector3D CalculateCrossProd(const Vector3D& v); //РІРµРєС‚РѕСЂРЅРѕРµ РїСЂРѕРёР·РІРµРґРµРЅРёРµ
 	bool CheckLimits();
 
 private:	
@@ -45,12 +45,12 @@ class Segment3D
 public:
 	Segment3D() = default;
 	Segment3D(const Vector3D& v, const Vector3D& u);
-	Vector3D Directional_Vector() const; // направляющий вектор отрезка
-	bool IsPointOn(const Vector3D& v) const; // ф-ция проверки что точка лежит на отрезке
-	Vector3D GetStart() const { // для инкапсуляции
+	Vector3D Directional_Vector() const; // РЅР°РїСЂР°РІР»В¤СЋС‰РёР№ РІРµРєС‚РѕСЂ РѕС‚СЂРµР·РєР°
+	bool IsPointOn(const Vector3D& v) const; // С„-С†РёВ¤ РїСЂРѕРІРµСЂРєРё С‡С‚Рѕ С‚РѕС‡РєР° Р»РµР¶РёС‚ РЅР° РѕС‚СЂРµР·РєРµ
+	Vector3D GetStart() const { // РґР»В¤ РёРЅРєР°РїСЃСѓР»В¤С†РёРё
 		return start;
 	}
-	Vector3D GetEnd() const { // для инкапсуляции
+	Vector3D GetEnd() const { // РґР»В¤ РёРЅРєР°РїСЃСѓР»В¤С†РёРё
 		return end;
 	}
 
@@ -63,11 +63,11 @@ private:
 std::pair <Vector3D, Vector3D>  CalculateLinkVector(const Segment3D& segment_u, const Segment3D& segment_v);
 
 /*
-* Функция поиска точки пересечения двух сегментов
-* @param segment_v первый сегмент для которго мы ищем точку пересечения
-* @param segment_u первый сегмент для которго мы ищем точку пересечения
-* @return Vector3D точку пересечения, или бросает исключение std::logic_error если если её нет или это множество точек
+* вЂСѓРЅРєС†РёВ¤ РїРѕРёСЃРєР° С‚РѕС‡РєРё РїРµСЂРµСЃРµС‡РµРЅРёВ¤ РґРІСѓС… СЃРµРіРјРµРЅС‚РѕРІ
+* @param segment_v РїРµСЂРІС‹Р№ СЃРµРіРјРµРЅС‚ РґР»В¤ РєРѕС‚РѕСЂРіРѕ РјС‹ РёС‰РµРј С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёВ¤
+* @param segment_u РїРµСЂРІС‹Р№ СЃРµРіРјРµРЅС‚ РґР»В¤ РєРѕС‚РѕСЂРіРѕ РјС‹ РёС‰РµРј С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёВ¤
+* @return Vector3D С‚РѕС‡РєСѓ РїРµСЂРµСЃРµС‡РµРЅРёВ¤, РёР»Рё Р±СЂРѕСЃР°РµС‚ РёСЃРєР»СЋС‡РµРЅРёРµ std::logic_error РµСЃР»Рё РµСЃР»Рё РµР„ РЅРµС‚ РёР»Рё СЌС‚Рѕ РјРЅРѕР¶РµСЃС‚РІРѕ С‚РѕС‡РµРє
 */
-Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u); //можно было сделать  через std::optional<Vector3D> и возврощать  std::nullopt если пересечения нет
+Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u); //РјРѕР¶РЅРѕ Р±С‹Р»Рѕ СЃРґРµР»Р°С‚СЊ  С‡РµСЂРµР· std::optional<Vector3D> Рё РІРѕР·РІСЂРѕС‰Р°С‚СЊ  std::nullopt РµСЃР»Рё РїРµСЂРµСЃРµС‡РµРЅРёВ¤ РЅРµС‚
 
 
