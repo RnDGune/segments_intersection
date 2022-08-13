@@ -6,8 +6,16 @@
 #include <array>
 #include <algorithm>
 #include <iterator>
+#include <utility>
+#include <tuple>
 
 constexpr double EPSILON = std::numeric_limits<double>::epsilon(); // машинный ноль
+
+/*ограничение от переполнения дабла
+* маск степент дабла 308, у нас берется скалярное произовденеи от векторного,
+* (е70 * e70 * e70 * e70)<308
+*/
+const double COORD_LIMIT = 1e70; 
 
 class Vector3D
 {
@@ -26,8 +34,12 @@ public:
 	double CalculateScalarProd(const Vector3D& v);// Скалярное произведенеи
 	double CalculateLength();  // норма вектора
 	Vector3D CalculateCrossProd(const Vector3D& v); //векторное произведение
+	bool CheckLimits();
 
 private:
+
+	
+
 	double X;
 	double Y;
 	double Z;

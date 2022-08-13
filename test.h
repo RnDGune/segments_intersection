@@ -191,7 +191,7 @@ void Test() {
 	}
 
 	{
-		Vector3D start_V(std::numeric_limits<double>::max(), std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
+		Vector3D start_V(1e70, 1e70, 1e70);
 		Vector3D end_V(0, 0, 0);
 		Vector3D start_U(0, 0, 0);
 		Vector3D end_U(0, 0, 0);
@@ -201,5 +201,70 @@ void Test() {
 		Vector3D intersec_real(0, 0, 0);
 		assert(intersec_calc == intersec_real, "Wrong intersect point");
 		std::cout << "Intersecting in point of very long segment test passed" << std::endl;
+	}
+
+	{
+		Vector3D start_V(1e70, 1e70, 1e70);
+		Vector3D end_V(0, 0, 0);
+		Vector3D start_U(-1e70, -1e70, -1e70);
+		Vector3D end_U(0, 0, 0);
+		Segment3D V(start_V, end_V);
+		Segment3D U(start_U, end_U);
+		Vector3D intersec_calc = Intersect(U, V);
+		Vector3D intersec_real(0, 0, 0);
+		assert(intersec_calc == intersec_real, "Wrong intersect point");
+		std::cout << "Intersecting in point of very long segment test passed" << std::endl;
+	}
+
+	{
+		Vector3D start_V(1e70, 1e70, 1e70);
+		Vector3D end_V(1e70, 1e70, 1e70);
+		Vector3D start_U(-1e70, -1e70, -1e70);
+		Vector3D end_U(-1e70, -1e70, -1e70);
+		Segment3D V(start_V, end_V);
+		Segment3D U(start_U, end_U);
+		try {
+			 Intersect(U, V);
+		}
+		catch (...){
+			std::cout << "Intersecting in point distance point test passed" << std::endl;
+		}				
+	}
+	{
+		Vector3D start_V(1e151, 1e150, 1e150);
+		Vector3D end_V(1e150, 1e150, 1e150);
+		Vector3D start_U(-1e150, -1e150, -1e150);
+		Vector3D end_U(-1e150, -1e150, -1e150);
+		Segment3D V(start_V, end_V);
+		Segment3D U(start_U, end_U);
+		try {
+			Vector3D intersec_calc = Intersect(U, V);
+		}
+		catch (...) {
+			std::cout << "Intersecting in point distance point test passed" << std::endl;
+		}
+	}
+
+	{
+		Vector3D start_V(1e70, 0, 0);
+		Vector3D end_V(0, 0, 0);
+		Vector3D start_U(1e50, 1, 0);
+		Vector3D end_U(0, -1, 0);
+		Segment3D V(start_V, end_V);
+		Segment3D U(start_U, end_U);
+		Vector3D intersec_calc = Intersect(U, V);
+	}
+	{
+		Vector3D start_V(1e70, 0, 0);
+		Vector3D end_V(-1e70, 0, 0);
+		Vector3D start_U(0, 1e70, 0);
+		Vector3D end_U(0, -1e70, 0);
+		Segment3D V(start_V, end_V);
+		Segment3D U(start_U, end_U);
+		Vector3D intersec_calc = Intersect(U, V);
+		Vector3D intersec_real(0, 0, 0);
+		assert(intersec_calc == intersec_real, "Wrong intersect point");
+		std::cout << "Intersecting in point of very long segment test passed" << std::endl;
+
 	}
 }

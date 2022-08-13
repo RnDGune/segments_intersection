@@ -1,8 +1,7 @@
 
 #include "vector3d.h"
 
-#include <utility>
-#include <tuple>
+
 
 Vector3D::Vector3D(double x, double y, double z) :
 	X(x),
@@ -10,6 +9,7 @@ Vector3D::Vector3D(double x, double y, double z) :
 	Z(z)
 {
 };
+
 
 bool Vector3D::operator== (const Vector3D& v) const {
 	if (std::abs(X - v.X) < EPSILON && std::abs(Y - v.Y) < EPSILON && std::abs(Z - v.Z) < EPSILON) {
@@ -63,6 +63,13 @@ Vector3D Vector3D::CalculateCrossProd(const Vector3D& v) { //векторное произведе
 	return cross_vec;
 };
 
+bool Vector3D::CheckLimits() {
+	if (std::abs(X) > COORD_LIMIT || std::abs(Y) > COORD_LIMIT || std::abs(Z) > COORD_LIMIT) {
+		throw std::invalid_argument("Coordinates are beyond of limits");
+	}
+	return true;
+}
+
 Segment3D::Segment3D(const Vector3D& v, const Vector3D& u) {
 	start = v;
 	end = u;
@@ -73,11 +80,11 @@ Vector3D Segment3D::Directional_Vector() const { // направляющий вектор отрезка
 }
 
 bool Segment3D::IsPointOn(const Vector3D& v) const { // ф-ция проверки что точка лежит на отрезке
-	Vector3D v_start = v - start;
-	Vector3D v_end = v - end;
-	if (v_start==v_end || v==start || v==end ) {
+	if (v == start || v == end) {
 		return true;
 	}
+	Vector3D v_start = v - start;
+	Vector3D v_end = v - end;	
 	if (v_start.CalculateScalarProd(v_end) > EPSILON) {
 		return false;
 	}
@@ -105,6 +112,9 @@ std::pair <Vector3D, Vector3D> CalculateLinkVector(const Segment3D& segment_v, c
 }
 
 
+
+
+
 /*
 *Функция поиска точки пересечения двух сегментов
 * @param segment_v первый сегмент для которго мы ищем точку пересечения
@@ -113,6 +123,11 @@ std::pair <Vector3D, Vector3D> CalculateLinkVector(const Segment3D& segment_v, c
 * можно было сделать  через возврат std::optional<Vector3D> и возвращать std::nullopt если пересечения нет
 */
 Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u) {
+
+	segment_v.GetStart().CheckLimits();
+	segment_u.GetStart().CheckLimits();
+	segment_v.GetEnd().CheckLimits();
+	segment_u.GetEnd().CheckLimits();
 	Vector3D v_direct_vec = segment_v.Directional_Vector();
 	Vector3D u_direct_vec = segment_u.Directional_Vector();
 	//Vector3D link_vec = segment_u.GetStart() - segment_v.GetStart();	
