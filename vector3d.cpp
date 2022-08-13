@@ -1,6 +1,4 @@
-
 #include "vector3d.h"
-
 
 
 Vector3D::Vector3D(double x, double y, double z) :
@@ -9,7 +7,6 @@ Vector3D::Vector3D(double x, double y, double z) :
 	Z(z)
 {
 };
-
 
 bool Vector3D::operator== (const Vector3D& v) const {
 	if (std::abs(X - v.X) < EPSILON && std::abs(Y - v.Y) < EPSILON && std::abs(Z - v.Z) < EPSILON) {

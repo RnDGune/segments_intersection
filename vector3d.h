@@ -23,22 +23,17 @@ public:
 
 	Vector3D() = default;
 	Vector3D(double x, double y, double z);
-
 	bool operator == (const Vector3D& v) const; 
 	bool operator != (const Vector3D& v) const;
-
 	const Vector3D operator - (const Vector3D& v) const;
 	const Vector3D operator + (const Vector3D& v) const;
 	const Vector3D operator * (double number) const;
-
 	double CalculateScalarProd(const Vector3D& v);// —кал€рное произведенеи
 	double CalculateLength();  // норма вектора
 	Vector3D CalculateCrossProd(const Vector3D& v); //векторное произведение
 	bool CheckLimits();
 
-private:
-
-	
+private:	
 
 	double X;
 	double Y;
@@ -50,7 +45,6 @@ class Segment3D
 public:
 	Segment3D() = default;
 	Segment3D(const Vector3D& v, const Vector3D& u);
-
 	Vector3D Directional_Vector() const; // направл€ющий вектор отрезка
 	bool IsPointOn(const Vector3D& v) const; // ф-ци€ проверки что точка лежит на отрезке
 	Vector3D GetStart() const { // дл€ инкапсул€ции
