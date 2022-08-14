@@ -108,17 +108,6 @@ std::pair <Vector3D, Vector3D> CalculateLinkVector(const Segment3D& segment_v, c
 	return std::make_pair(*std::get<1>(tuple_min_vec), std::get<2>(tuple_min_vec));
 }
 
-
-
-
-
-/*
-*Функция поиска точки пересечения двух сегментов
-* @param segment_v первый сегмент для которго мы ищем точку пересечения
-* @param segment_u первый сегмент для которго мы ищем точку пересечения
-* @return Vector3D точку пересечения, или бросает исключение std::logic_error если если её нет или это множество точек
-* можно было сделать  через возврат std::optional<Vector3D> и возвращать std::nullopt если пересечения нет
-*/
 Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u) {
 
 	segment_v.GetStart().CheckLimits();
@@ -127,11 +116,10 @@ Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u) {
 	segment_u.GetEnd().CheckLimits();
 	Vector3D v_direct_vec = segment_v.Directional_Vector();
 	Vector3D u_direct_vec = segment_u.Directional_Vector();
-	//Vector3D link_vec = segment_u.GetStart() - segment_v.GetStart();	
 	auto link_vec = CalculateLinkVector(segment_v, segment_u);
-	Vector3D fg = u_direct_vec.CalculateCrossProd(link_vec.first);
-	Vector3D fe = u_direct_vec.CalculateCrossProd(v_direct_vec);
-	if (fe.CalculateLength() < EPSILON) {
+	Vector3D u_link_cross_vec = u_direct_vec.CalculateCrossProd(link_vec.first);
+	Vector3D u_v_croos_vec = u_direct_vec.CalculateCrossProd(v_direct_vec);
+	if (u_v_croos_vec.CalculateLength() < EPSILON) {
 		if (v_direct_vec.CalculateLength() < EPSILON && segment_u.IsPointOn(segment_v.GetEnd())) {
 			return segment_v.GetStart();
 		}
@@ -172,13 +160,12 @@ Vector3D Intersect(const Segment3D& segment_v, const Segment3D& segment_u) {
 		}
 		throw std::logic_error("Parallel segment");
 	}
-	if (fe.CalculateScalarProd(link_vec.first) > EPSILON) {
+	if (u_v_croos_vec.CalculateScalarProd(link_vec.first) > EPSILON) {
 		throw std::logic_error("Disjoint segment");
 	}
-	Vector3D intersec_point = link_vec.second + v_direct_vec * ((fg.CalculateScalarProd(fe) / fe.CalculateLength()) / fe.CalculateLength()); // порядок умножения скаляра на вектор важен, определил только оператор вектор*скаляр
-	double d = fg.CalculateScalarProd(fe);
-	double a = fe.CalculateLength();
-
+	// порядок умножения скаляра на вектор важен, определил только оператор вектор*скаляр
+	Vector3D intersec_point = link_vec.second + v_direct_vec *
+		((u_link_cross_vec.CalculateScalarProd(u_v_croos_vec) / (u_v_croos_vec.CalculateLength()) * u_v_croos_vec.CalculateLength())); 
 	if (!segment_v.IsPointOn(intersec_point) || !segment_u.IsPointOn(intersec_point)) { // проверка что точка лежит на обоих отрезках
 		throw std::logic_error("Intersecting on continuation lines");
 	}

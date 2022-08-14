@@ -264,6 +264,18 @@ void Test() {
 		Vector3D intersec_real(0, 0, 0);
 		assert(intersec_calc == intersec_real, "Wrong intersect point");
 		std::cout << "Intersecting in point of very long segment test passed" << std::endl;
+	}
 
+	{
+		Vector3D start_V(std::numeric_limits<double>::min(), std::numeric_limits<double>::min(), std::numeric_limits<double>::min());
+		Vector3D end_V(50, 0, 0);
+		Vector3D start_U(0, 0, 0);
+		Vector3D end_U(0, 40, 0);
+		Segment3D V(start_V, end_V);
+		Segment3D U(start_U, end_U);
+		Vector3D intersec_calc = Intersect(U, V);
+		Vector3D intersec_real(0, 0, 0);
+		assert(intersec_calc == intersec_real, "Wrong intersect point");
+		std::cout << "Intersecting in point of closest segment test passed" << std::endl;
 	}
 }
